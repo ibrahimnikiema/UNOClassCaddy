@@ -47,83 +47,57 @@ class UsersController < ApplicationController
     if(session[:calendars] == nil)
       session[:calendars] = getCalendars()
     end
-    session[:calendars] = getCalendars()
     @calendars = session[:calendars]
     setCalendarVars(@calendars, @pageNum)
     render "nextPage"
   end
 
   def setCalendarVars(cals, page)
-    page = page - 1
     resetVars()
     currentClass = 0
     cals[page].each do |c|
-      startDate = ""
-      endDate = ""
-      if(c[1] != "TBA")
-        c[1] = addTimeIfNecessary(c[1])
-        c[2] = addTimeIfNecessary(c[2])
-        startDate = c[3]
-        endDate = c[3]
-        allDay = false
-      else
-        c[1] = "12:00"
-        c[2] = "12:00"
-        startDate = "2001-1-1"
-        endDate = "2099-1-1"
-        allDay = true
-        c[4] = c[4] + " - Online"
-      end
+      c[1] = addTimeIfNecessary(c[1])
+      c[2] = addTimeIfNecessary(c[2])
       if(currentClass == 0)
-        @title1 = c[0] + " " + c[4]
-        @start1 = startDate + " " + c[1] + ":00"
-        @end1 = endDate + " " + c[2] + ":00"
-        @allDay1 = allDay
+        @title1 = c[0]
+        @start1 = c[3].to_s + " " + c[1] + ":00"
+        @end1 = c[3].to_s + " " + c[2] + ":00"
       elsif currentClass == 1
-        @title2 = c[0] + " " + c[4]
-        @start2 = startDate + " " + c[1] + ":00"
-        @end2 = endDate + " " + c[2] + ":00"
-        @allDay2 = allDay
+        @title2 = c[0]
+        @start2 = c[3].to_s + " " + c[1] + ":00"
+        @end2 = c[3].to_s + " " + c[2] + ":00"
       elsif currentClass == 2
-        @title3 = c[0] + " " + c[4]
-        @start3 = startDate + " " + c[1] + ":00"
-        @end3 = endDate + " " + c[2] + ":00"
-        @allDay3 = allDay
+        @title3 = c[0]
+        @start3 = c[3].to_s + " " + c[1] + ":00"
+        @end3 = c[3].to_s + " " + c[2] + ":00"
       elsif currentClass == 3
-        @title4 = c[0] + " " + c[4]
-        @start4 = startDate + " " + c[1] + ":00"
-        @end4 = endDate + " " + c[2] + ":00"
-        @allDay4 = allDay
+        @title4 = c[0]
+        @start4 = c[3].to_s + " " + c[1] + ":00"
+        @end4 = c[3].to_s + " " + c[2] + ":00"
       elsif currentClass == 4
-        @title5 = c[0] + " " + c[4]
-        @start5 = startDate + " " + c[1] + ":00"
-        @end5 = endDate + " " + c[2] + ":00"
-        @allDay5 = allDay
+        @title5 = c[0]
+        @start5 = c[3].to_s + " " + c[1] + ":00"
+        @end5 = c[3].to_s + " " + c[2] + ":00"
       elsif currentClass == 5
-        @title6 = c[0] + " " + c[4]
-        @start6 = startDate + " " + c[1] + ":00"
-        @end6 = endDate + " " + c[2] + ":00"
-        @allDay6 = allDay
+        @title6 = c[0]
+        @start6 = c[3].to_s + " " + c[1] + ":00"
+        @end6 = c[3].to_s + " " + c[2] + ":00"
       elsif currentClass == 6
-        @title7 = c[0]  + " " + c[4]
-        @start7 = startDate + " " + c[1] + ":00"
-        @end7 = endDate + " " + c[2] + ":00"
-        @allDay7 = allDay
+        @title7 = c[0]
+        @start7 = c[3].to_s + " " + c[1] + ":00"
+        @end7 = c[3].to_s + " " + c[2] + ":00"
       elsif currentClass == 7
-        @title8 = c[0] + " " + c[4]
-        @start8 = startDate + " " + c[1] + ":00"
-        @end8 = endDate + " " + c[2] + ":00"
-        @allDay8 = allDay
+        @title8 = c[0]
+        @start8 = c[3].to_s + " " + c[1] + ":00"
+        @end8 = c[3].to_s + " " + c[2] + ":00"
       elsif currentClass == 8
-        @title9 = c[0] + " " + c[4]
-        @start9 = startDate + " " + c[1] + ":00"
-        @end9 = endDate + " " + c[2] + ":00"
-        @allDay9 = allDay
+        @title9 = c[0]
+        @start9 = c[3].to_s + " " + c[1] + ":00"
+        @end9 = c[3].to_s + " " + c[2] + ":00"
       elsif currentClass == 9
-        @title10 = c[0] + " " + c[4]
-        @start10 = startDate + " " + c[1] + ":00"
-        @end10 = endDate + " " + c[2] + ":00"
-        @allDay10 = allDay
+        @title10 = c[0]
+        @start10 = c[3].to_s + " " + c[1] + ":00"
+        @end10 = c[3].to_s + " " + c[2] + ":00"
       end
       currentClass = currentClass + 1
     end
@@ -176,11 +150,9 @@ class UsersController < ApplicationController
 
   def getCalendars()
     classes = getAllClasses()
-    p classes
     puts "All Classes"
     calendadrs = Array.new
     allClasses = splitClasses(classes)
-    p allClasses
     allCalendars = Array.new
     getCalendarsRecursive(allClasses, Array.new, allCalendars)
   #printArrayRec(allCalendars, 0)
@@ -226,7 +198,6 @@ class UsersController < ApplicationController
             thisClass.push(c[1])
             thisClass.push(c[2])
             thisClass.push(newDate.to_s)
-            thisClass.push(c[4])
             individualClassGroup.push(thisClass)
             end
           end
@@ -237,7 +208,6 @@ class UsersController < ApplicationController
             thisClass.push(c[1])
             thisClass.push(c[2])
             thisClass.push(newDate.to_s)
-            thisClass.push(c[4])
             individualClassGroup.push(thisClass)
             end
           end
@@ -248,7 +218,6 @@ class UsersController < ApplicationController
             thisClass.push(c[1])
             thisClass.push(c[2])
             thisClass.push(newDate.to_s)
-            thisClass.push(c[4])
             individualClassGroup.push(thisClass)
             end
           end
@@ -259,7 +228,6 @@ class UsersController < ApplicationController
             thisClass.push(c[1])
             thisClass.push(c[2])
             thisClass.push(newDate.to_s)
-            thisClass.push(c[4])
             individualClassGroup.push(thisClass)
             end
           end
@@ -270,7 +238,6 @@ class UsersController < ApplicationController
             thisClass.push(c[1])
             thisClass.push(c[2])
             thisClass.push(newDate.to_s)
-            thisClass.push(c[4])
             individualClassGroup.push(thisClass)
             end
           end
@@ -304,16 +271,7 @@ class UsersController < ApplicationController
       days = ""
       location = ""
       individualClass = Array.new
-      sectionList = Array.new
       individualClass.push(classDep + " " + classNumber)
-      doc.search('//th').each do |tr|
-        str = tr.content
-        if(str.include? "Section")
-          puts "added " + str + " to section list"
-          sectionList.push(str)
-        end
-      end
-      currentSection = 0
       doc.search('//table/tr/td/table/tr').each do |tr|
         str = tr.content
         if(str.include? "Time")
@@ -338,8 +296,6 @@ class UsersController < ApplicationController
           individualClass.push(days)
           time = ""
           days = ""
-          individualClass.push(sectionList[currentSection])
-          currentSection = currentSection + 1
           classList.push(individualClass)
           individualClass = Array.new
           individualClass.push(classDep + " " + classNumber)
